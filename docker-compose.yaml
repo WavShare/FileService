@@ -2,8 +2,6 @@ version: "3.8"
 services:
   file-service:
     container_name: file-service
-    depends_on:
-      - file-db
     image: file-service
     build:
       context: .
@@ -11,16 +9,10 @@ services:
     restart: on-failure
     ports:
       - "8084:8084"
-  file-db:
-    container_name: File-db
-    restart: always
-    image: redis:7.0.5-alpine
-    ports:
-      - "6379:6379"
-    expose:
-      - 6379
-    volumes:
-      - file-db-volume:/var/lib/file-db
+    networks:
+      - wavshare-nw
 
-volumes:
-  file-db-volume:
+networks:
+  wavshare-nw:
+    external:
+      name: wavshare-nw
